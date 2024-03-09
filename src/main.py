@@ -41,4 +41,4 @@ def run_main_loop(
 
         optimizer.apply_gradients(zip(all_mean_grads, model.trainable_variables))
 
-    return mean_reward_per_iteration
+    return mean_reward_per_iteration, model
