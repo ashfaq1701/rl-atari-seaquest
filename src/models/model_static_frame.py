@@ -5,10 +5,10 @@ from keras.src.layers import Rescaling
 
 
 def get_model_static_frame(input_shape, num_classes, seed):
+    tf.random.set_seed(seed)
+
     DefaultConv2D = partial(tf.keras.layers.Conv2D, kernel_size=3, padding="same",
                             activation="relu", kernel_initializer="he_normal")
-
-    tf.random.set_seed(seed)
 
     model = tf.keras.Sequential([
         tf.keras.layers.Input(shape=input_shape),
