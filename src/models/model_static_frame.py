@@ -1,5 +1,4 @@
 import tensorflow as tf
-from tensorflow.keras import layers, models
 
 from keras.src.layers import Rescaling
 
@@ -7,26 +6,18 @@ from keras.src.layers import Rescaling
 def get_model_static_frame(input_shape, num_classes, seed):
     tf.random.set_seed(seed)
 
-    model = models.Sequential([
+    model = tf.keras.Sequential([
         tf.keras.layers.Input(shape=input_shape),
         Rescaling(1. / 255),
-        # Convolutional layers
-        layers.Conv2D(32, 3, activation='relu'),
-        layers.MaxPooling2D(),
-        layers.Conv2D(64, 3, activation='relu'),
-        layers.MaxPooling2D(),
-        layers.Conv2D(128, 3, activation='relu'),
-        layers.MaxPooling2D(),
-        layers.Conv2D(128, 3, activation='relu'),
-        layers.MaxPooling2D(),
-        # Flatten layer
-        layers.Flatten(),
-        # Dense layers
-        layers.Dense(512, activation='relu'),
-        layers.Dropout(0.5),
-        layers.Dense(256, activation='relu'),
-        layers.Dropout(0.5),
-        layers.Dense(num_classes, activation='softmax')
+        tf.keras.layers.Conv2D(filters=32, kernel_size=8, strides=4, activation="relu"),
+        tf.keras.layers.Conv2D(filters=64, kernel_size=4, strides=2, activation="relu"),
+        tf.keras.layers.Conv2D(filters=64, kernel_size=3, activation="relu"),
+        tf.keras.layers.Flatten(),
+        tf.keras.layers.Dense(units=256, activation="relu"),
+        tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dense(units=128, activation="relu"),
+        tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dense(units=num_classes, activation="softmax")
     ])
 
     return model
