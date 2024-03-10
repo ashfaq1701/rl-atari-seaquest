@@ -12,7 +12,7 @@ def run_main_loop(
         model_type,
         env_name,
         env_seed=None,
-        model_seed=42):
+        model_seed=None):
     env, obs, _, action_count = create_env(env_name, env_seed)
     model = get_model(model_type, obs.shape, action_count, model_seed)
 

@@ -28,7 +28,7 @@ def play_multiple_episodes(env, n_episodes, n_max_steps, model, loss_fn):
             current_rewards.append(reward)
             current_grads.append(grads)
 
-            if done:
+            if done or truncated:
                 break
 
         all_rewards.append(current_rewards)
