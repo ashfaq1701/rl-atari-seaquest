@@ -1,5 +1,4 @@
 import tensorflow as tf
-
 from src.env import create_env
 from src.models import get_model
 from src.training import play_multiple_episodes, discount_and_normalize_rewards
