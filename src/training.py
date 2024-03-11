@@ -6,8 +6,7 @@ from gymnasium import Env
 def play_one_step(env: Env, obs, model, loss_fn):
     with tf.GradientTape() as tape:
         probas = model(obs[np.newaxis])
-        logits = tf.math.log(probas + tf.keras.backend.epsilon())
-        action = tf.random.categorical(logits, num_samples=1)
+        action = tf.constant([[np.random.choice(range(probas.shape[-1]), p=probas.numpy()[-1])]])
         loss = tf.reduce_mean(loss_fn(action, probas))
 
     grads = tape.gradient(loss, model.trainable_variables)
@@ -15,13 +14,13 @@ def play_one_step(env: Env, obs, model, loss_fn):
     return obs, reward, done, truncated, grads
 
 
-def play_multiple_episodes(env, n_episodes, n_max_steps, model, loss_fn):
+def play_multiple_episodes(env: Env, iteration_idx, n_episodes, n_max_steps, model, loss_fn):
     all_rewards = []
     all_grads = []
     for episode in range(n_episodes):
         current_rewards = []
         current_grads = []
-        obs, info = env.reset()
+        obs, info, = env.reset(seed=iteration_idx * 1000 + episode * 10)
         for step in range(n_max_steps):
             obs, reward, done, truncated, grads = play_one_step(
                 env, obs, model, loss_fn)

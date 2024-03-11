@@ -11,22 +11,22 @@ def run_main_loop(
         discount_factor,
         model_type,
         env_name,
-        env_seed=None,
         model_seed=None):
-    env, obs, _, action_count = create_env(env_name, env_seed)
+    env, obs, _, action_count = create_env(env_name, None)
     model = get_model(model_type, obs.shape, action_count, model_seed)
 
     loss_fn = tf.keras.losses.sparse_categorical_crossentropy
-    optimizer = tf.keras.optimizers.Nadam(learning_rate=0.01)
+    optimizer = tf.keras.optimizers.Nadam(learning_rate=0.0001)
 
     mean_reward_per_iteration = []
 
     for iteration in range(n_iterations):
-        all_rewards, all_grads = play_multiple_episodes(env, n_episodes, n_max_steps, model, loss_fn)
+        all_rewards, all_grads = play_multiple_episodes(env, iteration, n_episodes, n_max_steps, model, loss_fn)
         all_final_rewards = discount_and_normalize_rewards(all_rewards, discount_factor)
 
         total_rewards = sum(map(sum, all_rewards))
         mean_reward = total_rewards / n_episodes
+
         print(f"Iteration {iteration + 1} / {n_iterations}: Mean reward: {mean_reward:.1f}")
         mean_reward_per_iteration.append(mean_reward)
 
