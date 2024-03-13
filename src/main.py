@@ -11,12 +11,13 @@ def run_main_loop(
         discount_factor,
         model_type,
         env_name,
+        learning_rate=0.0001,
         model_seed=None):
     env, obs, _, action_count = create_env(env_name, None)
     model = get_model(model_type, obs.shape, action_count, model_seed)
 
     loss_fn = tf.keras.losses.sparse_categorical_crossentropy
-    optimizer = tf.keras.optimizers.Nadam(learning_rate=0.0001)
+    optimizer = tf.keras.optimizers.Nadam(learning_rate=learning_rate)
 
     mean_reward_per_iteration = []
 
