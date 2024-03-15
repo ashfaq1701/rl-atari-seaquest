@@ -3,6 +3,7 @@ import tensorflow as tf
 from gymnasium import Env
 
 
+# Reference: 9.	A. Geron, “Hands on machine learning with Scikit-Learn and Tensorflow,” O’Reilly: 1044-1099
 def play_one_step(env: Env, obs, model, loss_fn):
     with tf.GradientTape() as tape:
         probas = model(obs[np.newaxis])
@@ -14,6 +15,7 @@ def play_one_step(env: Env, obs, model, loss_fn):
     return obs, reward, done, truncated, grads
 
 
+# Reference: 9.	A. Geron, “Hands on machine learning with Scikit-Learn and Tensorflow,” O’Reilly: 1044-1099
 def play_multiple_episodes(env: Env, iteration_idx, n_episodes, n_max_steps, model, loss_fn):
     all_rewards = []
     all_grads = []
@@ -36,6 +38,7 @@ def play_multiple_episodes(env: Env, iteration_idx, n_episodes, n_max_steps, mod
     return all_rewards, all_grads
 
 
+# Reference: 9.	A. Geron, “Hands on machine learning with Scikit-Learn and Tensorflow,” O’Reilly: 1044-1099
 def discount_rewards(rewards, discount_factor):
     discounted = np.array(rewards)
     for step in range(len(rewards) - 2, -1, -1):
@@ -43,6 +46,7 @@ def discount_rewards(rewards, discount_factor):
     return discounted
 
 
+# Reference: 9.	A. Geron, “Hands on machine learning with Scikit-Learn and Tensorflow,” O’Reilly: 1044-1099
 def discount_and_normalize_rewards(all_rewards, discount_factor):
     all_discounted_rewards = [discount_rewards(rewards, discount_factor)
                               for rewards in all_rewards]
